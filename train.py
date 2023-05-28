@@ -1,3 +1,39 @@
+import argparse
+
+parser = argparse.ArgumentParser(description = 'testing the waters')
+parser.add_argument('-h', '--hidden_size', type= int)
+parser.add_argument('-e', '--embedding_size', type= int)
+parser.add_argument('-l', '--num_layers', type= int)
+parser.add_argument('-d', '--dropout', type= float)
+parser.add_argument('-c', '--cell_type', type= str)
+
+args = parser.parse_args()
+
+if args.hidden_size is None:
+    hidden_size = 256
+else:
+    hidden_size = args.hidden_size
+
+if args.embedding_size is None:
+    embedding_size = 256
+else:
+    embedding_size = args.embedding_size
+
+if args.num_layers is None:
+    num_layers = 3
+else:
+    num_layers = args.num_layers
+
+if args.dropout is None:
+    dropout = 0.3
+else:
+    dropout = args.dropout
+
+if args.cell_type is None:
+    cell_type = 'LSTM'
+else:
+    cell_type = args.cell_type
+
 from __future__ import unicode_literals, print_function, division
 from io import open
 import unicodedata
@@ -328,18 +364,6 @@ def printcsv(encoder, decoder, pairs):
         csvwriter.writerow(fields) 
         csvwriter.writerows(rows)
         
-encoder_hidden_size = 256
-encoder_embedding_size = 256
-encoder_num_layers = 3
-encoder_cell_type = 'LSTM'
-encoder_dropout = 0.3
-
-decoder_hidden_size = 256
-decoder_embedding_size = 256
-decoder_num_layers = 3
-decoder_cell_type = 'LSTM'
-decoder_dropout = 0.3
-
 with open('aksharantar_sampled/tam/tam_test.csv', "r", encoding="utf-8") as f:
       val_lines = f.read().split("\n")
 
@@ -356,7 +380,7 @@ train_pairs = []
 for i in range(len(train_lines)):
   train_pairs.append(train_lines[i].split(","))
 
-encoder1 = EncoderRNN(input_lang.n_words, encoder_hidden_size,  encoder_dropout ,  False,encoder_cell_type, encoder_num_layers ,encoder_embedding_size).to(device)
-decoder1 = DecoderRNN(output_lang.n_words, decoder_hidden_size,  decoder_dropout ,  False,decoder_cell_type, decoder_num_layers ,decoder_embedding_size).to(device)
+encoder1 = EncoderRNN(input_lang.n_words, hidden_size,  dropout ,  False, cell_type, num_layers ,embedding_size).to(device)
+decoder1 = DecoderRNN(output_lang.n_words, hidden_size,  dropout ,  False, cell_type, num_layers ,embedding_size).to(device)
 
 trainIters(encoder1, decoder1, 75000, train_pairs, val_pairs, 0.01)
