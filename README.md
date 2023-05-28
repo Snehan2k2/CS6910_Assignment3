@@ -4,7 +4,9 @@ Use recurrent neural networks to build a character transliteration system. The g
 
 Running the code:
 
-train.py code can be used to run the code, to check if it works. (sweep.py contains the sweep code and attention.py contains the attention code)
+train.py code can be used to run the code, to check if it works. (sweep.py contains the sweep code and attention.py contains the attention code).
+
+
 Firstly the dataset zip file has to be present in the google drive, as the drive is mounted and later it's unzipped in the code.
 
 The code can be run by the following command:
